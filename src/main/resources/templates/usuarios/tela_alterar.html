@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alterar Usuário - SpotiPobre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Paleta Premium: Bege e Cinza Escuro */
+            --bg-color: #DDD0C8;
+            --text-main: #323232;
+            --card-bg: #FFFFFF;
+            --text-hover: #1a1a1a;
+            --border-color: #c9bbae;
+            --input-bg: #fdfcfb;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 550px;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(50, 50, 50, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--text-main);
+            padding-bottom: 12px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="date"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+            font-weight: 600;
+            color: var(--text-main);
+            box-sizing: border-box;
+            background-color: var(--input-bg);
+            transition: all 0.3s ease;
+        }
+
+        input::placeholder {
+            color: #a39b94;
+            font-weight: 400;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--text-main);
+            box-shadow: 0 0 0 1px var(--text-main);
+            background-color: #FFFFFF;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 14px 16px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            flex: 1;
+            text-align: center;
+        }
+
+        .btn:active {
+            transform: scale(0.97);
+        }
+
+        .btn-submit {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        .btn-submit:hover {
+            background-color: var(--text-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(50, 50, 50, 0.25);
+        }
+
+        .btn-back {
+            background-color: transparent;
+            color: var(--text-main);
+            border-color: var(--text-main);
+        }
+
+        .btn-back:hover {
+            background-color: var(--bg-color);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Alterar Usuário</h1>
+
+        <form action="/usuarios/alterar" method="post">
+            <input type="hidden" name="id" value="{{usuario.id}}">
+
+            <div class="form-group">
+                <label for="nome">Nome</label>
+                <input type="text" id="nome" name="nome" value="{{usuario.nome}}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" value="{{usuario.email}}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="senha">Nova Senha</label>
+                <input type="password" id="senha" name="senha" placeholder="Preencha apenas se quiser alterar">
+            </div>
+
+            <div class="form-group">
+                <label for="data_nascimento">Data de Nascimento</label>
+                <input type="date" id="data_nascimento" name="data_nascimento" value="{{usuario.dataNascimento}}" required>
+            </div>
+
+            <div class="actions">
+                <a href="/" class="btn btn-back">Voltar</a>
+                <button type="submit" class="btn btn-submit">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>
