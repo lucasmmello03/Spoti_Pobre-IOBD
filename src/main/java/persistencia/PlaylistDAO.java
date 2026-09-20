@@ -4,47 +4,137 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import negocio.Playlist;
 
 public class PlaylistDAO {
 
     public boolean salvarComDono(Playlist playlist, int usuarioId) {
-        // Usa RETURNING id para pegar o ID gerado pelo banco
         String sqlPlaylist = "INSERT INTO playlist (nome, publica) VALUES (?, ?) RETURNING id;";
         String sqlVinculo = "INSERT INTO usuario_playlist (usuario_id, playlist_id, dono) VALUES (?, ?, true);";
 
         try (Connection conexao = new ConexaoPostgreSQL().getConexao()) {
-            conexao.setAutoCommit(false); // Inicia a transação
+            conexao.setAutoCommit(false);
 
             try (PreparedStatement stmtPlaylist = conexao.prepareStatement(sqlPlaylist);
-                 PreparedStatement stmtVinculo = conexao.prepareStatement(sqlVinculo)) {
+                    PreparedStatement stmtVinculo = conexao.prepareStatement(sqlVinculo)) {
 
-                // 1. Salva a playlist
                 stmtPlaylist.setString(1, playlist.getNome());
                 stmtPlaylist.setBoolean(2, playlist.isPublica());
-                
-                ResultSet rs = stmtPlaylist.executeQuery(); // Executa e pega o retorno
-                
+
+                ResultSet rs = stmtPlaylist.executeQuery();
+
                 if (rs.next()) {
                     int novaPlaylistId = rs.getInt("id");
 
-                    // 2. Cria o vínculo de dono
                     stmtVinculo.setInt(1, usuarioId);
                     stmtVinculo.setInt(2, novaPlaylistId);
                     stmtVinculo.executeUpdate();
                 }
 
-                conexao.commit(); // Confirma ambas as operações
+                conexao.commit();
                 return true;
 
             } catch (SQLException e) {
-                conexao.rollback(); // Desfaz em caso de erro em qualquer insert
+                conexao.rollback();
                 System.out.println("Erro ao salvar playlist e vínculo: " + e.getMessage());
                 return false;
             }
 
         } catch (SQLException e) {
             System.out.println("Erro de conexão na transação da playlist: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public List<Playlist> listarTodas() {
+        List<Playlist> playlists = new ArrayList<>();
+        String sql = "SELECT p.id, p.nome, p.publica, u.nome AS dono_nome " +
+                "FROM playlist p " +
+                "JOIN usuario_playlist up ON p.id = up.playlist_id " +
+                "JOIN usuario u ON up.usuario_id = u.id " +
+                "WHERE up.dono = true " +
+                "ORDER BY p.nome;";
+
+        try (Connection conexao = new ConexaoPostgreSQL().getConexao();
+                PreparedStatement stmt = conexao.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                Playlist p = new Playlist();
+                p.setId(rs.getInt("id"));
+                p.setNome(rs.getString("nome"));
+                p.setPublica(rs.getBoolean("publica"));
+                p.setDono_nome(rs.getString("dono_nome"));
+                playlists.add(p);
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao listar playlists: " + e.getMessage());
+        }
+        return playlists;
+    }
+
+    public Playlist buscarPorId(int id) {
+        Playlist playlist = null;
+        String sql = "SELECT p.id, p.nome, p.publica, u.nome AS dono_nome " +
+                     "FROM playlist p " +
+                     "JOIN usuario_playlist up ON p.id = up.playlist_id " +
+                     "JOIN usuario u ON up.usuario_id = u.id " +
+                     "WHERE p.id = ? AND up.dono = true;";
+
+        try (Connection conexao = new ConexaoPostgreSQL().getConexao();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+             
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    playlist = new Playlist();
+                    playlist.setId(rs.getInt("id"));
+                    playlist.setNome(rs.getString("nome"));
+                    playlist.setPublica(rs.getBoolean("publica"));
+                    playlist.setDono_nome(rs.getString("dono_nome"));
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Erro ao buscar playlist: " + e.getMessage());
+        }
+        return playlist;
+    }
+
+    public boolean alterar(Playlist playlist) {
+        String sql = "UPDATE playlist SET nome = ?, publica = ? WHERE id = ?;";
+
+        try (Connection conexao = new ConexaoPostgreSQL().getConexao();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setString(1, playlist.getNome());
+            stmt.setBoolean(2, playlist.isPublica());
+            stmt.setInt(3, playlist.getId());
+
+            int linhasAfetadas = stmt.executeUpdate();
+            return linhasAfetadas > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao alterar playlist: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean excluir(int id) {
+        String sql = "DELETE FROM playlist WHERE id = ?;";
+
+        try (Connection conexao = new ConexaoPostgreSQL().getConexao();
+             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+
+            int linhasAfetadas = stmt.executeUpdate();
+            return linhasAfetadas > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Erro ao excluir playlist: " + e.getMessage());
             return false;
         }
     }

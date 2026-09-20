@@ -17,11 +17,11 @@ public class UsuarioController {
     
     public UsuarioController(Javalin app) {
         
-        app.get("/", ctx -> {
+        app.get("/usuarios", ctx -> {
             ArrayList<Usuario> vet = dao.listar();
             Map<String, Object> map = new HashMap<>();
             map.put("vetUsuario", vet);
-            ctx.render("/templates/index.html", map);
+            ctx.render("/templates/usuarios/listagem.html", map);
         });
 
         app.get("/usuarios/tela_adicionar", ctx -> {
@@ -56,7 +56,7 @@ public class UsuarioController {
 
             boolean resultado = dao.atualizar(usuarioNovo);
             if (resultado) {
-                ctx.redirect("/");
+                ctx.redirect("/usuarios");
             } else {
                 ctx.html("deu xabum");
             }
@@ -65,7 +65,7 @@ public class UsuarioController {
         app.get("/usuarios/excluir/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             dao.deletar(id);
-            ctx.redirect("/");
+            ctx.redirect("/usuarios");
         });
 
         app.post("/usuarios/adicionar", ctx -> {
@@ -85,7 +85,7 @@ public class UsuarioController {
 
             boolean resultado = dao.salvar(usuarioNovo);
             if (resultado) {
-                ctx.redirect("/");
+                ctx.redirect("/usuarios");
             } else {
                 ctx.html("deu xabum");
             }

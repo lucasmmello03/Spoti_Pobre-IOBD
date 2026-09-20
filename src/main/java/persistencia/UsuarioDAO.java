@@ -11,7 +11,6 @@ import negocio.Usuario;
 
 public class UsuarioDAO {
 
-    //Traz todos os usuarios
     public ArrayList<Usuario> listar() throws SQLException {
         ArrayList<Usuario> listaDeUsuarios = new ArrayList<>();
         String sql = "SELECT * FROM usuario ORDER BY id;";
@@ -31,7 +30,7 @@ public class UsuarioDAO {
             }
         }
         return listaDeUsuarios;
-    }
+    }   
 
     //Seleciona por id
     public Usuario obter(int id) throws SQLException {

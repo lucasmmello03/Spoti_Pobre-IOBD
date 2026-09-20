@@ -4,14 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerenciamento - SpotiPobre</title>
+    <title>Listagem de Usuários - SpotiPobre</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #DDD0C8;
             --text-main: #323232;
             --card-bg: #FFFFFF;
-            
             --text-hover: #1a1a1a;
             --border-color: #c9bbae;
             --item-bg: #fdfcfb;
@@ -47,6 +46,25 @@
             margin-bottom: 30px;
             border-bottom: 3px solid var(--text-main);
             padding-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-back {
+            font-size: 0.8rem;
+            text-decoration: none;
+            padding: 8px 12px;
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background-color: var(--text-main);
+            color: var(--bg-color);
         }
 
         ul.user-list {
@@ -124,19 +142,21 @@
             box-shadow: 0 4px 10px rgba(50, 50, 50, 0.2);
         }
 
-        .btn-container {
-            display: flex;
-            gap: 15px;
-        }
-
+        /* Botão inferior padronizado 100% da largura */
         .btn-add {
             background-color: var(--text-main);
             color: var(--bg-color);
-            flex: 1;
+            width: 100%;
             padding: 16px;
             font-size: 0.95rem;
+            font-weight: 600;
             text-align: center;
+            text-decoration: none;
             display: block;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            box-sizing: border-box;
         }
 
         .btn-add:hover {
@@ -144,28 +164,15 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 15px rgba(50, 50, 50, 0.25);
         }
-
-        .btn-secondary {
-            background-color: transparent;
-            color: var(--text-main);
-            border: 2px solid var(--text-main);
-            flex: 1;
-            padding: 16px;
-            font-size: 0.95rem;
-            text-align: center;
-            display: block;
-        }
-
-        .btn-secondary:hover {
-            background-color: var(--bg-color);
-            transform: translateY(-2px);
-        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Dashboard SpotiPobre</h1>
+        <h1>
+            Usuários
+            <a href="/" class="btn-back">Início</a>
+        </h1>
 
         <ul class="user-list">
             {{#vetUsuario}}
@@ -179,10 +186,7 @@
             {{/vetUsuario}}
         </ul>
 
-        <div class="btn-container">
-            <a href="/usuarios/tela_adicionar" class="btn btn-secondary">+ Novo Usuário</a>
-            <a href="/playlists/tela_adicionar" class="btn btn-add">+ Nova Playlist</a>
-        </div>
+        <a href="/usuarios/tela_adicionar" class="btn-add">+ Novo Usuário</a>
     </div>
 </body>
 

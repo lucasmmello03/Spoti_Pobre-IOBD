@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo Musical - SpotiPobre</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #DDD0C8;
+            --text-main: #323232;
+            --card-bg: #FFFFFF;
+            --text-hover: #1a1a1a;
+            --border-color: #c9bbae;
+            --item-bg: #fdfcfb;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 50px 20px;
+            display: flex;
+            justify-content: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 20px 40px rgba(50, 50, 50, 0.1);
+        }
+
+        h1 {
+            margin-top: 0;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--text-main);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--text-main);
+            padding-bottom: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .btn-back {
+            font-size: 0.8rem;
+            text-decoration: none;
+            padding: 8px 12px;
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+            border-radius: 4px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+
+        .btn-back:hover {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+        }
+
+        .album-card {
+            margin-bottom: 35px;
+            background-color: var(--item-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 20px;
+        }
+
+        .album-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .album-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin: 0 0 5px 0;
+            text-transform: uppercase;
+        }
+
+        .album-date {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #666;
+            margin: 0;
+        }
+
+        ul.music-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        ul.music-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            transition: transform 0.2s ease;
+        }
+
+        ul.music-list li:hover {
+            transform: translateX(3px);
+            border-color: var(--text-main);
+        }
+
+        .music-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .music-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .music-duration {
+            font-size: 0.8rem;
+            color: #777;
+            margin-top: 3px;
+        }
+
+        .btn-play {
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-play:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(50, 50, 50, 0.2);
+        }
+
+        .play-form {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 0;
+        }
+
+        .play-form select {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            padding: 7px 8px;
+            border: 2px solid var(--border-color);
+            border-radius: 4px;
+            background-color: #FFFFFF;
+            color: var(--text-main);
+            max-width: 160px;
+        }
+
+        .play-form select:focus {
+            border-color: var(--text-main);
+            outline: none;
+        }
+
+        .aviso-ok {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--text-main);
+            color: var(--bg-color);
+            padding: 12px 20px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            box-shadow: 0 6px 15px rgba(50, 50, 50, 0.25);
+            animation: sumir 4s forwards;
+        }
+
+        @keyframes sumir {
+            0%, 75% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>
+            Catálogo Musical
+            <a href="/" class="btn-back">Inicio</a>
+        </h1>
+
+        {{#ouvida}}
+        <div class="aviso-ok">Reprodução registrada com sucesso!</div>
+        {{/ouvida}}
+
+        {{#albuns}}
+        <div class="album-card">
+            <div class="album-header">
+                <h2 class="album-title">{{titulo}}</h2>
+                <p class="album-date">Lançamento: {{data_lancamento}}</p>
+            </div>
+
+            <ul class="music-list">
+                {{#musicas}}
+                <li id="musica-{{id}}">
+                    <div class="music-info">
+                        <span class="music-name">{{nome}}</span>
+                        <span class="music-duration">{{duracao}}</span>
+                    </div>
+                    
+                    <form action="/reproduzir" method="post" class="play-form">
+                        <input type="hidden" name="musica_id" value="{{id}}">
+                        <select name="usuario_id" required>
+                            {{#usuarios}}
+                            <option value="{{id}}">{{nome}}</option>
+                            {{/usuarios}}
+                        </select>
+                        <button type="submit" class="btn-play">Ouvir</button>
+                    </form>
+                </li>
+                {{/musicas}}
+            </ul>
+        </div>
+        {{/albuns}}
+
+        {{^albuns}}
+        <div class="album-card">
+            <p style="text-align: center; font-weight: 600;">Nenhum álbum cadastrado no catálogo.</p>
+        </div>
+        {{/albuns}}
+
+    </div>
+</body>
+
+</html>
