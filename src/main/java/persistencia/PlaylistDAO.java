@@ -53,9 +53,8 @@ public class PlaylistDAO {
         List<Playlist> playlists = new ArrayList<>();
         String sql = "SELECT p.id, p.nome, p.publica, u.nome AS dono_nome " +
                 "FROM playlist p " +
-                "JOIN usuario_playlist up ON p.id = up.playlist_id " +
-                "JOIN usuario u ON up.usuario_id = u.id " +
-                "WHERE up.dono = true " +
+                "LEFT JOIN usuario_playlist up ON p.id = up.playlist_id AND up.dono = true " +
+                "LEFT JOIN usuario u ON up.usuario_id = u.id " +
                 "ORDER BY p.nome;";
 
         try (Connection conexao = new ConexaoPostgreSQL().getConexao();
@@ -80,9 +79,9 @@ public class PlaylistDAO {
         Playlist playlist = null;
         String sql = "SELECT p.id, p.nome, p.publica, u.nome AS dono_nome " +
                      "FROM playlist p " +
-                     "JOIN usuario_playlist up ON p.id = up.playlist_id " +
-                     "JOIN usuario u ON up.usuario_id = u.id " +
-                     "WHERE p.id = ? AND up.dono = true;";
+                     "LEFT JOIN usuario_playlist up ON p.id = up.playlist_id AND up.dono = true " +
+                     "LEFT JOIN usuario u ON up.usuario_id = u.id " +
+                     "WHERE p.id = ?;";
 
         try (Connection conexao = new ConexaoPostgreSQL().getConexao();
              PreparedStatement stmt = conexao.prepareStatement(sql)) {
@@ -123,18 +122,37 @@ public class PlaylistDAO {
     }
 
     public boolean excluir(int id) {
-        String sql = "DELETE FROM playlist WHERE id = ?;";
+        String sqlUsuarioPlaylist = "DELETE FROM usuario_playlist WHERE playlist_id = ?;";
+        String sqlPlaylistMusica = "DELETE FROM playlist_musica WHERE playlist_id = ?;";
+        String sqlPlaylist = "DELETE FROM playlist WHERE id = ?;";
 
-        try (Connection conexao = new ConexaoPostgreSQL().getConexao();
-             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+        try (Connection conexao = new ConexaoPostgreSQL().getConexao()) {
+            conexao.setAutoCommit(false);
 
-            stmt.setInt(1, id);
+            try (PreparedStatement stmtVinculo = conexao.prepareStatement(sqlUsuarioPlaylist);
+                 PreparedStatement stmtMusicas = conexao.prepareStatement(sqlPlaylistMusica);
+                 PreparedStatement stmtPlaylist = conexao.prepareStatement(sqlPlaylist)) {
 
-            int linhasAfetadas = stmt.executeUpdate();
-            return linhasAfetadas > 0;
+                stmtVinculo.setInt(1, id);
+                stmtVinculo.executeUpdate();
+
+                stmtMusicas.setInt(1, id);
+                stmtMusicas.executeUpdate();
+
+                stmtPlaylist.setInt(1, id);
+                int linhasAfetadas = stmtPlaylist.executeUpdate();
+
+                conexao.commit();
+                return linhasAfetadas > 0;
+
+            } catch (SQLException e) {
+                conexao.rollback();
+                System.out.println("Erro ao excluir playlist: " + e.getMessage());
+                return false;
+            }
 
         } catch (SQLException e) {
-            System.out.println("Erro ao excluir playlist: " + e.getMessage());
+            System.out.println("Erro de conexão ao excluir playlist: " + e.getMessage());
             return false;
         }
     }
