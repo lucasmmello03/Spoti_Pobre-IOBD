@@ -32,7 +32,6 @@ public class UsuarioDAO {
         return listaDeUsuarios;
     }   
 
-    //Seleciona por id
     public Usuario obter(int id) throws SQLException {
         String sql = "SELECT * FROM usuario WHERE id = ?;";
 
@@ -56,7 +55,6 @@ public class UsuarioDAO {
         return null;
     }
 
-    //Insert
     public boolean salvar(Usuario usuario) {
         String sql = "INSERT INTO usuario (email, senha, nome, data_nascimento) VALUES (?, md5(?), ?, ?);";
 
@@ -67,7 +65,6 @@ public class UsuarioDAO {
             instrucaoSQL.setString(2, usuario.getSenha());
             instrucaoSQL.setString(3, usuario.getNome());
             
-            // Tratamento seguro para data nula
             if (usuario.getDataNascimento() != null) {
                 instrucaoSQL.setDate(4, Date.valueOf(usuario.getDataNascimento()));
             } else {

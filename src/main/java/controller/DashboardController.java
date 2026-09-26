@@ -17,15 +17,12 @@ public class DashboardController {
 
         app.get("/dashboard", ctx -> {
             Map<String, Object> map = new HashMap<>();
-            // As chaves "albuns" e "usuarios" têm que bater com {{#albuns}} e {{#usuarios}} do HTML
             map.put("albuns", dao.listarCatalogo());
             map.put("usuarios", usuarioDAO.listar());
-            // Fica true quando o /reproduzir redireciona com ?ok=1 (mostra o aviso na tela)
             map.put("ouvida", ctx.queryParam("ok") != null);
             ctx.render("/templates/dashboard.html", map);
         });
 
-        // Botão "Ouvir": registra a reprodução e volta para o catálogo
         app.post("/reproduzir", ctx -> {
             int musicaId = Integer.parseInt(ctx.formParam("musica_id"));
             int usuarioId = Integer.parseInt(ctx.formParam("usuario_id"));

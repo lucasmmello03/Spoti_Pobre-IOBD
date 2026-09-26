@@ -15,10 +15,8 @@ import negocio.Musica;
 public class DashboardDAO {
 
     public List<Album> listarCatalogo() {
-        // LinkedHashMap preserva a ordem em que os álbuns chegam do banco
         Map<Integer, Album> mapaAlbuns = new LinkedHashMap<>();
 
-        // O JOIN exigido no escopo do trabalho
         String sql = "SELECT a.id AS album_id, a.titulo, a.data_lancamento, " +
                      "m.id AS musica_id, m.nome, m.duracao " +
                      "FROM album a " +
@@ -33,7 +31,6 @@ public class DashboardDAO {
             while (rs.next()) {
                 int albumId = rs.getInt("album_id");
 
-                // Se o álbum ainda não está no mapa, cria e adiciona
                 if (!mapaAlbuns.containsKey(albumId)) {
                     Album album = new Album();
                     album.setId(albumId);
@@ -45,13 +42,11 @@ public class DashboardDAO {
                     mapaAlbuns.put(albumId, album);
                 }
 
-                // Cria a música
                 Musica musica = new Musica();
                 musica.setId(rs.getInt("musica_id"));
                 musica.setNome(rs.getString("nome"));
                 musica.setDuracao(rs.getTime("duracao"));
 
-                // Adiciona a música na lista de músicas do álbum correspondente
                 mapaAlbuns.get(albumId).getMusicas().add(musica);
             }
 
@@ -59,7 +54,6 @@ public class DashboardDAO {
             System.out.println("Erro ao carregar o Dashboard: " + e.getMessage());
         }
 
-        // Retorna apenas a lista de álbuns já preenchida com as músicas
         return new ArrayList<>(mapaAlbuns.values());
     }
 }

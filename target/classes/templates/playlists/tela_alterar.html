@@ -5,160 +5,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alterar Playlist - SpotiPobre</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #DDD0C8;
-            --text-main: #323232;
-            --card-bg: #FFFFFF;
-            --text-hover: #1a1a1a;
-            --border-color: #c9bbae;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 50px 20px;
-            display: flex;
-            justify-content: center;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 20px 40px rgba(50, 50, 50, 0.1);
-        }
-
-        h1 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-main);
-            margin-bottom: 30px;
-            border-bottom: 3px solid var(--text-main);
-            padding-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-back {
-            font-size: 0.8rem;
-            text-decoration: none;
-            padding: 8px 12px;
-            border: 2px solid var(--text-main);
-            color: var(--text-main);
-            border-radius: 4px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .btn-back:hover {
-            background-color: var(--text-main);
-            color: var(--bg-color);
-        }
-
-        .form-group {
-            margin-bottom: 25px;
-        }
-
-        label {
-            display: block;
-            font-weight: 800;
-            margin-bottom: 8px;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 14px;
-            border: 2px solid var(--border-color);
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-family: 'Montserrat', sans-serif;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
-        }
-
-        input[type="text"]:focus {
-            border-color: var(--text-main);
-            outline: none;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            accent-color: var(--text-main);
-            cursor: pointer;
-        }
-
-        .checkbox-group label {
-            margin-bottom: 0;
-            cursor: pointer;
-        }
-
-        .btn-save {
-            background-color: var(--text-main);
-            color: var(--bg-color);
-            width: 100%;
-            padding: 16px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 10px;
-        }
-
-        .btn-save:hover {
-            background-color: var(--text-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(50, 50, 50, 0.25);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/app.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>
-            Alterar Playlist
-            <a href="/playlists/tela_listagem" class="btn-back">Cancelar</a>
-        </h1>
+    <div class="page page--narrow">
+        <header class="topbar">
+            <a href="/" class="brand">
+                <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                SpotiPobre
+            </a>
+            <nav class="nav" aria-label="Menu principal">
+                <a href="/dashboard">Catálogo</a>
+                <a href="/playlists/tela_listagem" aria-current="page">Playlists</a>
+                <a href="/usuarios">Usuários</a>
+            </nav>
+        </header>
 
-        <!-- O form aponta para a rota POST /playlists/alterar do PlaylistController -->
-        <form action="/playlists/alterar" method="POST">
-            <!-- ID oculto para o backend saber qual playlist atualizar -->
-            <input type="hidden" name="id" value="{{playlist.id}}">
-
-            <div class="form-group">
-                <label for="nome">Nome da Playlist</label>
-                <input type="text" id="nome" name="nome" value="{{playlist.nome}}" required>
+        <div class="page-head">
+            <div>
+                <p class="eyebrow">Editar</p>
+                <h1 class="page-title">Alterar Playlist</h1>
             </div>
+        </div>
 
-            <div class="form-group checkbox-group">
-                <input type="checkbox" id="publica" name="publica" value="true" {{#playlist.publica}}checked{{/playlist.publica}}>
-                <label for="publica">Tornar playlist pública</label>
-            </div>
+        <div class="panel">
+            <form action="/playlists/alterar" method="post">
+                <input type="hidden" name="id" value="{{playlist.id}}">
 
-            <button type="submit" class="btn-save">Salvar Alterações</button>
-        </form>
+                <div class="field">
+                    <label class="label" for="nome">Nome da Playlist</label>
+                    <input type="text" id="nome" name="nome" class="input" value="{{playlist.nome}}" required>
+                </div>
+
+                <label class="switch">
+                    <input type="checkbox" id="publica" name="publica" value="true" {{#playlist.publica}}checked{{/playlist.publica}}>
+                    <span>Tornar playlist pública</span>
+                </label>
+
+                <div class="form-actions">
+                    <a href="/playlists/tela_listagem" class="btn">Cancelar</a>
+                    <button type="submit" class="btn btn--primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
     </div>
 </body>
 

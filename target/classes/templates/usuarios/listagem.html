@@ -5,188 +5,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Listagem de Usuários - SpotiPobre</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #DDD0C8;
-            --text-main: #323232;
-            --card-bg: #FFFFFF;
-            --text-hover: #1a1a1a;
-            --border-color: #c9bbae;
-            --item-bg: #fdfcfb;
-        }
-
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            padding: 50px 20px;
-            display: flex;
-            justify-content: center;
-            -webkit-font-smoothing: antialiased;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 650px;
-            background-color: var(--card-bg);
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 20px 40px rgba(50, 50, 50, 0.1);
-        }
-
-        h1 {
-            margin-top: 0;
-            font-size: 1.5rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            color: var(--text-main);
-            margin-bottom: 30px;
-            border-bottom: 3px solid var(--text-main);
-            padding-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .btn-back {
-            font-size: 0.8rem;
-            text-decoration: none;
-            padding: 8px 12px;
-            border: 2px solid var(--text-main);
-            color: var(--text-main);
-            border-radius: 4px;
-            font-weight: 600;
-            transition: all 0.2s ease;
-        }
-
-        .btn-back:hover {
-            background-color: var(--text-main);
-            color: var(--bg-color);
-        }
-
-        ul.user-list {
-            list-style: none;
-            padding: 0;
-            margin: 0 0 35px 0;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-
-        ul.user-list li {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 16px 20px;
-            background-color: var(--item-bg);
-            border: 1px solid var(--border-color);
-            border-left: 5px solid var(--text-main);
-            border-radius: 4px;
-            transition: all 0.3s ease;
-        }
-
-        ul.user-list li:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(50, 50, 50, 0.08);
-            border-color: var(--text-main);
-        }
-
-        .user-name {
-            font-weight: 600;
-            font-size: 1.05rem;
-            color: var(--text-main);
-        }
-
-        .actions {
-            display: flex;
-            gap: 12px;
-        }
-
-        .btn {
-            text-decoration: none;
-            padding: 8px 18px;
-            border-radius: 4px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            border: 2px solid transparent;
-        }
-
-        .btn:active {
-            transform: scale(0.97);
-        }
-
-        .btn-edit {
-            background-color: transparent;
-            color: var(--text-main);
-            border-color: var(--text-main);
-        }
-
-        .btn-edit:hover {
-            background-color: var(--bg-color);
-        }
-
-        .btn-delete {
-            background-color: var(--text-main);
-            color: var(--bg-color);
-        }
-
-        .btn-delete:hover {
-            background-color: var(--text-hover);
-            box-shadow: 0 4px 10px rgba(50, 50, 50, 0.2);
-        }
-
-        /* Botão inferior padronizado 100% da largura */
-        .btn-add {
-            background-color: var(--text-main);
-            color: var(--bg-color);
-            width: 100%;
-            padding: 16px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            text-transform: uppercase;
-            box-sizing: border-box;
-        }
-
-        .btn-add:hover {
-            background-color: var(--text-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(50, 50, 50, 0.25);
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/app.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>
-            Usuários
-            <a href="/" class="btn-back">Início</a>
-        </h1>
+    <div class="page">
+        <header class="topbar">
+            <a href="/" class="brand">
+                <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+                SpotiPobre
+            </a>
+            <nav class="nav" aria-label="Menu principal">
+                <a href="/dashboard">Catálogo</a>
+                <a href="/playlists/tela_listagem">Playlists</a>
+                <a href="/usuarios" aria-current="page">Usuários</a>
+            </nav>
+        </header>
 
-        <ul class="user-list">
+        <div class="page-head">
+            <div>
+                <p class="eyebrow">Cadastro</p>
+                <h1 class="page-title">Usuários</h1>
+            </div>
+            <a href="/usuarios/tela_adicionar" class="btn btn--primary">+ Novo Usuário</a>
+        </div>
+
+        <ul class="list">
             {{#vetUsuario}}
-            <li>
-                <span class="user-name">{{nome}}</span>
-                <div class="actions">
-                    <a href="/usuarios/tela_alterar/{{id}}" class="btn btn-edit">Alterar</a>
-                    <a href="/usuarios/excluir/{{id}}" class="btn btn-delete">Excluir</a>
+            <li class="playlist">
+                <div class="cover" aria-hidden="true">👤</div>
+
+                <div class="playlist__info">
+                    <span class="playlist__name">{{nome}}</span>
+                </div>
+
+                <div class="playlist__actions">
+                    <a href="/usuarios/tela_alterar/{{id}}" class="btn btn--sm">Alterar</a>
+
+                    <form action="/usuarios/excluir" method="post" class="inline-form"
+                        onsubmit="return confirm('Tem certeza que deseja excluir este usuário?');">
+                        <input type="hidden" name="id" value="{{id}}">
+                        <button type="submit" class="btn btn--danger btn--sm">Excluir</button>
+                    </form>
                 </div>
             </li>
             {{/vetUsuario}}
         </ul>
 
-        <a href="/usuarios/tela_adicionar" class="btn-add">+ Novo Usuário</a>
+        {{^vetUsuario}}
+        <div class="empty">Nenhum usuário cadastrado no sistema.</div>
+        {{/vetUsuario}}
     </div>
 </body>
 

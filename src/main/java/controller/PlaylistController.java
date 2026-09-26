@@ -14,14 +14,12 @@ public class PlaylistController {
 
     public PlaylistController(Javalin app) {
 
-        // ---------- LISTAGEM ----------
         app.get("/playlists/tela_listagem", ctx -> {
             Map<String, Object> map = new HashMap<>();
             map.put("playlists", playlistDAO.listarTodas());
             ctx.render("/templates/playlists/tela_listagem.html", map);
         });
 
-        // ---------- ADICIONAR ----------
         app.get("/playlists/nova", ctx -> {
             Map<String, Object> map = new HashMap<>();
             map.put("usuarios", usuarioDAO.listar());
@@ -46,8 +44,6 @@ public class PlaylistController {
             }
         });
 
-        // ---------- ALTERAR ----------
-        // Abre a tela com o formulário preenchido (link "Alterar" da listagem)
         app.get("/playlists/tela_alterar/{id}", ctx -> {
             int id = Integer.parseInt(ctx.pathParam("id"));
             Playlist playlist = playlistDAO.buscarPorId(id);
@@ -62,7 +58,6 @@ public class PlaylistController {
             ctx.render("/templates/playlists/tela_alterar.html", map);
         });
 
-        // Recebe o formulário da tela_alterar (o id vem no campo hidden)
         app.post("/playlists/alterar", ctx -> {
             Playlist playlist = new Playlist();
             playlist.setId(Integer.parseInt(ctx.formParam("id")));
@@ -76,8 +71,6 @@ public class PlaylistController {
             }
         });
 
-        // ---------- EXCLUIR ----------
-        // Recebe o formulário do botão "Excluir" da listagem e volta para a listagem
         app.post("/playlists/excluir", ctx -> {
             int id = Integer.parseInt(ctx.formParam("id"));
             playlistDAO.excluir(id);

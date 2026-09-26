@@ -1,98 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Início - SpotiPobre</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-color: #DDD0C8;
-            --text-main: #323232;
-            --card-bg: #FFFFFF;
-            --text-hover: #1a1a1a;
-            --border-color: #c9bbae;
-        }
-        body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            text-align: center;
-        }
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 10px;
-        }
-        p {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 40px;
-            color: #555;
-        }
-        .menu-grid {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            justify-content: center;
-            max-width: 900px;
-        }
-        .card {
-            background-color: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 8px;
-            padding: 30px;
-            width: 250px;
-            text-decoration: none;
-            color: var(--text-main);
-            transition: all 0.2s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: var(--text-main);
-            box-shadow: 0 10px 20px rgba(50,50,50,0.1);
-        }
-        .card h2 {
-            font-size: 1.2rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-        }
-        .card span {
-            font-size: 0.9rem;
-            color: #666;
-            font-weight: 600;
-        }
-    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/app.css">
 </head>
-<body>
-    <h1>SpotiPobre</h1>
-    <p>O seu catálogo musical de baixo orçamento</p>
 
-    <div class="menu-grid">
-        <a href="/dashboard" class="card">
-            <h2>🎵 Catálogo</h2>
-            <span>Ouvir Músicas</span>
-        </a>
-        <a href="/playlists/tela_listagem" class="card">
-            <h2>📁 Playlists</h2>
-            <span>Listar</span>
-        </a>
-        <a href="/usuarios" class="card">
-            <h2>👥 Usuários</h2>
-            <span>Gerenciar</span>
-        </a>
-    </div>
+<body>
+    <main class="page page--home">
+        <section class="hero">
+            <span class="eq eq--lg" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+            <h1 class="hero__title">SpotiPobre</h1>
+            <p class="hero__sub">O seu catálogo musical de baixo orçamento</p>
+        </section>
+
+        <nav class="hub" aria-label="Menu principal">
+            <a href="/dashboard" class="hub__card">
+                <span class="hub__icon" aria-hidden="true">🎵</span>
+                <span class="hub__title">Catálogo</span>
+                <span class="hub__desc">Ouvir músicas</span>
+            </a>
+
+            <a href="/playlists/tela_listagem" class="hub__card">
+                <span class="hub__icon" aria-hidden="true">📁</span>
+                <span class="hub__title">Playlists</span>
+                <span class="hub__desc">Listar</span>
+            </a>
+
+            <a href="/usuarios" class="hub__card">
+                <span class="hub__icon" aria-hidden="true">👥</span>
+                <span class="hub__title">Usuários</span>
+                <span class="hub__desc">Gerenciar</span>
+            </a>
+        </nav>
+    </main>
 </body>
+
 </html>

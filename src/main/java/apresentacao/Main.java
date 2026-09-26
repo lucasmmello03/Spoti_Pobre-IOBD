@@ -6,6 +6,7 @@ import controller.DashboardController;
 import controller.PlaylistController;
 import controller.UsuarioController;
 import io.javalin.Javalin;
+import io.javalin.http.staticfiles.Location;
 import io.javalin.rendering.template.JavalinMustache;
 
 public class Main {
@@ -14,6 +15,7 @@ public class Main {
         //Rota principal
         Javalin app = Javalin.create(config -> {
             config.fileRenderer(new JavalinMustache());
+            config.staticFiles.add("/public", Location.CLASSPATH);
         }).start(7070);
 
 
