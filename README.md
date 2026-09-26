@@ -1,6 +1,6 @@
 # 🎧 SpotiPobre
 
-Sistema web de catálogo musical e playlists, desenvolvido para a disciplina de Interação Web do curso de Análise e Desenvolvimento de Sistemas (IFRS - Campus Rio Grande).
+Sistema web de catálogo musical e playlists, desenvolvido para a disciplina de Implementação e Operação de Banco de Dados do curso de Análise e Desenvolvimento de Sistemas (IFRS - Campus Rio Grande).
 
 O Javalin processa as requisições, conversa com o PostgreSQL via JDBC puro (sem ORM) e renderiza as telas com templates Mustache.
 
