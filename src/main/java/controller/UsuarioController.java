@@ -58,14 +58,18 @@ public class UsuarioController {
             if (resultado) {
                 ctx.redirect("/usuarios");
             } else {
-                ctx.html("deu xabum");
+                ctx.html("Não foi possível salvar as alterações. O e-mail informado já pode estar cadastrado para outro usuário.");
             }
         });
 
-        app.get("/usuarios/excluir/{id}", ctx -> {
-            int id = Integer.parseInt(ctx.pathParam("id"));
-            dao.deletar(id);
-            ctx.redirect("/usuarios");
+        app.post("/usuarios/excluir", ctx -> {
+            int id = Integer.parseInt(ctx.formParam("id"));
+            boolean resultado = dao.deletar(id);
+            if (resultado) {
+                ctx.redirect("/usuarios");
+            } else {
+                ctx.html("Erro ao excluir usuário.");
+            }
         });
 
         app.post("/usuarios/adicionar", ctx -> {
@@ -87,7 +91,7 @@ public class UsuarioController {
             if (resultado) {
                 ctx.redirect("/usuarios");
             } else {
-                ctx.html("deu xabum");
+                ctx.html("Não foi possível criar o usuário. O e-mail informado já pode estar cadastrado.");
             }
         });
     }

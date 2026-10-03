@@ -73,8 +73,12 @@ public class PlaylistController {
 
         app.post("/playlists/excluir", ctx -> {
             int id = Integer.parseInt(ctx.formParam("id"));
-            playlistDAO.excluir(id);
-            ctx.redirect("/playlists/tela_listagem");
+            boolean resultado = playlistDAO.excluir(id);
+            if (resultado) {
+                ctx.redirect("/playlists/tela_listagem");
+            } else {
+                ctx.html("Erro ao excluir playlist.");
+            }
         });
     }
 }

@@ -11,16 +11,24 @@ import io.javalin.rendering.template.JavalinMustache;
 
 public class Main {
     public static void main(String[] args) throws SQLException {
-        
+
         //Rota principal
         Javalin app = Javalin.create(config -> {
             config.fileRenderer(new JavalinMustache());
             config.staticFiles.add("/public", Location.CLASSPATH);
         }).start(7070);
 
+        app.exception(Exception.class, (e, ctx) -> {
+            System.out.println("Erro não tratado em " + ctx.method() + " " + ctx.path() + ": " + e);
+            e.printStackTrace();
+            ctx.status(500);
+            ctx.html("<h1>Ocorreu um erro</h1><p>" + e.getClass().getSimpleName()
+                    + (e.getMessage() != null ? ": " + e.getMessage() : "")
+                    + "</p><p><a href=\"/\">Voltar ao início</a></p>");
+        });
 
         app.get("/", ctx -> ctx.render("/templates/home.html"));
-        
+
         //Rotas de usuario
         new UsuarioController(app);
 
